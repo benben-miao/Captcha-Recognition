@@ -30,7 +30,20 @@ model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=
 # Result of test-captcha\0Bju.jpg: 0BjU
 ```
 
-### 2. Usage
+### 2. Create Environment and Install Requirements
+```bash
+git clone https://github.com/benben-miao/Captcha-Recognition.git
+cd Captcha-Recognition
+
+conda create -n captcha python=3.8
+conda activate captcha
+
+pip install -r requirements.txt
+
+python cap-reg.py test.jpg
+```
+
+### 3. Usage
 ```bash
 # Example 1
 python cap-reg.py test.jpg
