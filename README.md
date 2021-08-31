@@ -4,6 +4,8 @@
 > Train Captcha Dataset -> Model Train (Keras, Tensorflow, CNN) -> Model Save -> Model Evaluation and Prediction
 
 #### 1.1 Model Train
+![train-captcha-images](https://gitee.com/benben-miao/image-cloud/raw/master/GitHub/Captcha-Recognition/train-captcha-images.png)
+
 ```python
 # 验证码输入 -> 卷积层提取特征 -> 特征连接分类器 (36分类，不区分大小写)。
 # Keras_weight: Alex Net，Google net，VGG16，VGG19，ResNet50，Xception，InceptionV3 都是由ImageNet训练而来。
@@ -17,8 +19,13 @@ model = Model(inputs=input_image, outputs=predicts)
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 ```
 
+![train-process](https://gitee.com/benben-miao/image-cloud/raw/master/GitHub/Captcha-Recognition/train-process.png)
+
 #### 1.2 Acc of Prediction Result
+![test-multiple](https://gitee.com/benben-miao/image-cloud/raw/master/GitHub/Captcha-Recognition/test-multiple.png)
+
 ```bash
+python cap-reg.py test-captcha\0Ayx.jpg test-captcha\0BDv.jpg test-captcha\0Bju.jpg
 # print("Result of %s: %s" %(img, res))
 
 # python cap-reg.py test-captcha\0Ayx.jpg test-captcha\0BDv.jpg test-captcha\0Bju.jpg 
@@ -44,6 +51,8 @@ python cap-reg.py test.jpg
 ```
 
 ### 3. Usage
+![cap-rec](https://gitee.com/benben-miao/image-cloud/raw/master/GitHub/Captcha-Recognition/cap-rec.png)
+
 ```bash
 # Example 1
 python cap-reg.py test.jpg
