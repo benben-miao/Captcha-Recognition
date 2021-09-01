@@ -37,6 +37,19 @@ python cap-reg.py test-captcha\0Ayx.jpg test-captcha\0BDv.jpg test-captcha\0Bju.
 # Result of test-captcha\0Bju.jpg: 0BjU
 ```
 
+#### 1.3 Model Diagram from Code
+> CNN model plot
+
+![CNN](https://gitee.com/benben-miao/image-cloud/raw/master/GitHub/Captcha-Recognition/model_cnn.png)
+
+> VGG16 model plot
+
+![VGG16](https://gitee.com/benben-miao/image-cloud/raw/master/GitHub/Captcha-Recognition/model_vgg16.png)
+
+> Xception model plot
+
+![Xcenption](https://gitee.com/benben-miao/image-cloud/raw/master/GitHub/Captcha-Recognition/model_xception.png)
+
 ### 2. Create Environment and Install Requirements
 ```bash
 git clone https://github.com/benben-miao/Captcha-Recognition.git
