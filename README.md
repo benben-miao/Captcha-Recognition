@@ -50,7 +50,7 @@ python cap-reg.py test-captcha\0Ayx.jpg test-captcha\0BDv.jpg test-captcha\0Bju.
 
 ![Xcenption](https://gitee.com/benben-miao/image-cloud/raw/master/GitHub/Captcha-Recognition/model_xception.png)
 
-<div style="height: 450px; width: 100%; overflow: scroll;">
+<div style="height: 450px; width: 100%; overflow-y: scroll;">
 <img src="https://gitee.com/benben-miao/image-cloud/raw/master/GitHub/Captcha-Recognition/model_xception.png" style="width: 100%">
 </img>
 </div>
