@@ -1,3 +1,6 @@
 # git rm -rf __pycache__/
 
 __pycache__
+
+VGG16/check_point.h5
+VGG16/TB_logs/
