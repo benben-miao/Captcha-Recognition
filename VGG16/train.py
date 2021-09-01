@@ -14,30 +14,30 @@ import matplotlib.pyplot as plt
 
 def randomCode():
   dig_asc = string.digits + string.ascii_uppercase
-  # print(dig_asc)
-  code = ''.join(random.sample(dig_asc, 4))
-  # print(code)
-  return code, dig_asc
+  # cap_str = ''.join([random.choice(dig_asc) for i in range(4)])
+  cap_str = ''.join(random.sample(dig_asc, 4))
+  # print(cap_str)
+  return dig_asc, cap_str
 
-def genCaptcha(height=80, width=170, batch_size=32, n_class=36):
-  X = np.zeros((batch_size, height, width, 3), dtype=np.float)
+def genCap(height=80, width=170, batch_size=32, n_class=36):
+  X = np.zeros((batch_size, height, width, 3), dtype=np.uint8)
   y = [np.zeros((batch_size, n_class), dtype=np.uint8) for i in range(4)]
 
-  generator = ImageCaptcha(height=height, width=width)
-  while 1:
+  cap_gen = ImageCaptcha(height=height, width=width)
+  while True:
     for i in range(batch_size):
-      code_str, dig_asc = randomCode()
-      # code_img = generator.generate_image(code_str)
-      # code_img.save()
-      X[i] = np.array(generator.generate_image(code_str)).astype('float32')/255.0
-      for bat, cha in enumerate(code_str):
-        y[bat][i,:] = 0
-        y[bat][i, dig_asc.find(cha)] = 1
+      dig_asc, cap_str = randomCode()
+      # cap_img = cap_gen.generate_image(cap_str)
+      # cap_img.save()
+      X[i] = cap_gen.generate_image(cap_str)
+      for pos, char in enumerate(cap_str):
+        y[pos][i, :] = 0
+        y[pos][i, dig_asc.find(char)] = 1
       yield X,y
 
 def trainBreakModel():
-  h, w, nclass = 80, 170, 36
-  input_tensor = Input(shape=(h, w, 3))
+  height, width, n_class = 80, 170, 36
+  input_tensor = Input(shape=(height, width, 3))
   x = input_tensor
   # VGG16 神经网络层
   for i in range(4):
@@ -46,16 +46,16 @@ def trainBreakModel():
     x = BatchNormalization(axis=3)(x)
     x = MaxPooling2D((2, 2))(x)
   x = Flatten()(x)
-  x = [Dense(nclass, activation='softmax', name='D%d'%(n+1))(x) for n in range(4)]
+  x = [Dense(n_class, activation='softmax', name='D%d'%(n+1))(x) for n in range(4)]
   model = Model(inputs=input_tensor, outputs=x)
   return model
-# plot_model(trainBreakModel(), to_file='model_plot.png', show_shapes=True, show_layer_names=True)
+# plot_model(trainBreakModel(), to_file='model_vgg16.png', show_shapes=True, show_layer_names=True)
 
 def train():
   model = trainBreakModel()
 
   check_point = ModelCheckpoint(
-    filepath='check_point.h5',
+    filepath='model_captcha.h5',
     save_best_only=True
   )
 
@@ -66,11 +66,11 @@ def train():
   )
 
   model.fit_generator(
-    genCaptcha(),
-    epochs=10,
-    steps_per_epoch=50,
-    validation_data=genCaptcha(),
-    validation_steps=10,
+    genCap(),
+    epochs=5,
+    steps_per_epoch=10000,
+    validation_data=genCap(),
+    validation_steps=1000,
     callbacks=[check_point, TensorBoard(log_dir='TB_logs')]
   )
 
