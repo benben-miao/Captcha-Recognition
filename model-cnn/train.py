@@ -75,7 +75,7 @@ def buildModel():
 # 模型训练
 def trainModel():
   model = buildModel()
-  callbacks = [EarlyStopping(monitor='val_accuracy', patience=5, verbose=1)]
+  callbacks = [EarlyStopping(monitor='val_loss', patience=10, verbose=1)]
   batch_size = 64
   n_epochs = 100
   history = model.fit(x_train, y_train, batch_size=batch_size, epochs=n_epochs, \

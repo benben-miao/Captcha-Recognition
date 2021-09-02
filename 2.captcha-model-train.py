@@ -106,8 +106,8 @@ def trainModel():
     # )
 
     early_stop = EarlyStopping(
-        monitor='val_accuracy', 
-        patience=5, 
+        monitor='val_loss',
+        patience=10, 
         verbose=1
     )
 
@@ -126,7 +126,7 @@ def trainModel():
     # tensorboard –logdir ./TBlogs/
     # onnxH5(model)
 
-    val_acc = model_fit.history['val_accuracy']
+    val_acc = model_fit.history['val_dense_accuracy']
     np.save('val_acc.npy', val_acc)
     # val_acc = np.load('val_acc.npy')
     # plt.plot(range(len(val_acc)), val_acc, label='Model Fit Process')
