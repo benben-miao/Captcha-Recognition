@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from keras.applications.xception import Xception,preprocess_input
 from keras.layers import Input,Dense,Dropout
 from keras.models import Model, load_model
