@@ -88,6 +88,7 @@ def trainModel():
     validation_data=genCap(),
     validation_steps=1000,
     callbacks=[check_point, TensorBoard(log_dir='TB_logs')]
+    # tensorboard –logdir ./TB_logs/
   )
   
   # onnxH5(model)

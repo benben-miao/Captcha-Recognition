@@ -2,10 +2,15 @@ from keras.applications.xception import Xception,preprocess_input
 from keras.layers import Input,Dense,Dropout
 from keras.models import Model, load_model
 from keras.utils.vis_utils import plot_model
-# from scipy import misc
+from keras.callbacks import ModelCheckpoint, TensorBoard, EarlyStopping
+# import keras2onnx, datetime
+
+from sklearn.model_selection import train_test_split
 from skimage import transform, io
-import keras2onnx
-import datetime
+# from scipy import misc
+
+from matplotlib import pyplot as plt
+import pandas as pd
 import numpy as np
 import string
 import glob
@@ -66,6 +71,7 @@ def genCap(cap_imgs, batch_size):
         yield x,[y[:,i] for i in range(4)]
         # 输出：图片 array 和四个转化成数字的字母 例如：[array([6]), array([0]), array([3]), array([24])])
 
+'''
 def onnxH5(model):
     # Convert to onnx model
     # model = load_model('model_xception.h5')
@@ -81,6 +87,7 @@ def onnxH5(model):
     onnx_model.doc_string = 'Model of Captcha'
     onnx_model.model_version = 1
     keras2onnx.save_model(onnx_model, 'model_xception.onnx')
+'''
 
 def trainModel():
     model = buildModel()
@@ -90,17 +97,41 @@ def trainModel():
         loss='sparse_categorical_crossentropy', 
         metrics=['accuracy']
     )
-    model.fit(
+
+    # check_point = ModelCheckpoint(
+    #     filepath='check_point.h5',
+    #     save_best_only=True
+    # )
+
+    early_stop = EarlyStopping(
+        monitor='val_accuracy', 
+        patience=5, 
+        verbose=1
+    )
+
+    model_fit = model.fit(
         genCap(train_samples, 100),
         epochs=5,
         steps_per_epoch=45000/100,
         validation_data=genCap(test_samples, 100),
-        validation_steps=5000/100
+        validation_steps=5000/100,
+        callbacks=[early_stop, TensorBoard(log_dir='TBlogs')]
         # use_multiprocessing=True,
         # workers=5
     )
     model.save('model_xception.h5')
+
+    # tensorboard –logdir ./TBlogs/
     # onnxH5(model)
+
+    val_acc = model_fit.history['val_accuracy']
+    np.save('val_acc.npy', val_acc)
+    # val_acc = np.load('val_acc.npy')
+    # plt.plot(range(len(val_acc)), val_acc, label='Model Fit Process')
+    # plt.xlabel('epochs')
+    # plt.ylabel('accuracy')
+    # plt.legend()
+    # plt.show()
 
 if __name__ == '__main__':
     trainModel()
